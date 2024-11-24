@@ -1,137 +1,112 @@
-const { makeid } = require('./gen-id');
 const express = require('express');
 const fs = require('fs');
-let router = express.Router();
+const { exec } = require("child_process");
+let router = express.Router()
 const pino = require("pino");
-const { default: makeWASocket, useMultiFileAuthState, delay, Browsers, makeCacheableSignalKeyStore, getAggregateVotesInPollMessage, DisconnectReason, WA_DEFAULT_EPHEMERAL, jidNormalizedUser, proto, getDevice, generateWAMessageFromContent, fetchLatestBaileysVersion, makeInMemoryStore, getContentType, generateForwardMessageContent, downloadContentFromMessage, jidDecode } = require('@whiskeysockets/baileys')
-
+const {
+    default: makeWASocket,
+    useMultiFileAuthState,
+    delay,
+    makeCacheableSignalKeyStore,
+    Browsers,
+    jidNormalizedUser
+} = require("@whiskeysockets/baileys");
 const { upload } = require('./mega');
+
 function removeFile(FilePath) {
     if (!fs.existsSync(FilePath)) return false;
     fs.rmSync(FilePath, { recursive: true, force: true });
 }
+
 router.get('/', async (req, res) => {
-    const id = makeid();
     let num = req.query.number;
-    async function GIFTED_MD_PAIR_CODE() {
-        const {
-            state,
-            saveCreds
-        } = await useMultiFileAuthState('./temp/' + id);
+    async function PrabathPair() {
+        const { state, saveCreds } = await useMultiFileAuthState(`./session`);
         try {
-var items = ["Safari"];
-function selectRandomItem(array) {
-  var randomIndex = Math.floor(Math.random() * array.length);
-  return array[randomIndex];
-}
-var randomItem = selectRandomItem(items);
-            
-            let sock = makeWASocket({
+            let PrabathPairWeb = makeWASocket({
                 auth: {
                     creds: state.creds,
                     keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" }).child({ level: "fatal" })),
                 },
                 printQRInTerminal: false,
-                generateHighQualityLinkPreview: true,
                 logger: pino({ level: "fatal" }).child({ level: "fatal" }),
-                syncFullHistory: false,
-                browser: Browsers.macOS(randomItem)
+                browser: Browsers.macOS("Safari"),
             });
-            if (!sock.authState.creds.registered) {
+
+            if (!PrabathPairWeb.authState.creds.registered) {
                 await delay(1500);
                 num = num.replace(/[^0-9]/g, '');
-                const code = await sock.requestPairingCode(num);
+                const code = await PrabathPairWeb.requestPairingCode(num);
                 if (!res.headersSent) {
                     await res.send({ code });
                 }
             }
-            sock.ev.on('creds.update', saveCreds);
-            sock.ev.on("connection.update", async (s) => {
 
-    const {
-                    connection,
-                    lastDisconnect
-                } = s;
-                
-                if (connection == "open") {
-                    await delay(5000);
-                    let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-                    let rf = __dirname + `/temp/${id}/creds.json`;
-                    function generateRandomText() {
-                        const prefix = "3EB";
-                        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                        let randomText = prefix;
-                        for (let i = prefix.length; i < 22; i++) {
-                            const randomIndex = Math.floor(Math.random() * characters.length);
-                            randomText += characters.charAt(randomIndex);
-                        }
-                        return randomText;
-                    }
-                    const randomText = generateRandomText();
+            PrabathPairWeb.ev.on('creds.update', saveCreds);
+            PrabathPairWeb.ev.on("connection.update", async (s) => {
+                const { connection, lastDisconnect } = s;
+                if (connection === "open") {
                     try {
+                        await delay(10000);
+                        const sessionPrabath = fs.readFileSync('./session/creds.json');
 
+                        const auth_path = './session/';
+                        const user_jid = jidNormalizedUser(PrabathPairWeb.user.id);
 
-                        
-                        const { upload } = require('./mega');
-                        const mega_url = await upload(fs.createReadStream(rf), `${sock.user.id}.json`);
+                      function randomMegaId(length = 6, numberLength = 4) {
+                      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                      let result = '';
+                      for (let i = 0; i < length; i++) {
+                      result += characters.charAt(Math.floor(Math.random() * characters.length));
+                        }
+                       const number = Math.floor(Math.random() * Math.pow(10, numberLength));
+                        return `${result}${number}`;
+                        }
+
+                        const mega_url = await upload(fs.createReadStream(auth_path + 'creds.json'), `${randomMegaId()}.json`);
+
                         const string_session = mega_url.replace('https://mega.nz/file/', '');
-                        let md = "Thenu-MD=" + string_session;
-                        let code = await sock.sendMessage(sock.user.id, { text: md });
-                        let desc = `*𝙳𝚘𝚗𝚝 𝚜𝚑𝚊𝚛𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚠𝚒𝚝𝚑 𝚊𝚗𝚢𝚘𝚗𝚎!! 𝚄𝚜𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚝𝚘 𝚌𝚛𝚎𝚊𝚝𝚎 THENU-𝙼𝙳 𝚆𝚑𝚊𝚝𝚜𝚊𝚙𝚙 𝚄𝚜𝚎𝚛 𝚋𝚘𝚝.*\n\n ◦ *Github:* https://github.com/darkhackersl/Thenu-MD-V2\n\n*Lets fun*\n*Thenu-MD*\n\n> Thenux-AI`; 
-                        await sock.sendMessage(sock.user.id, {
-text: desc,
-contextInfo: {
-externalAdReply: {
-title: "Thenu-ᴍᴅ",
-thumbnailUrl: "https://i.ibb.co/mJ5vk7c/Thenu-MD-new-card-1.png",
-sourceUrl: "https://whatsapp.com/channel/0029VBhMZasD8SE5GRwzqn3Z",
-mediaType: 1,
-renderLargerThumbnail: true
-}  
-}
-},
-{quoted:code })
+
+                        const sid = string_session;
+
+                        const dt = await PrabathPairWeb.sendMessage(user_jid, {
+                            text: sid
+                        });
+
+                         await PrabathPairWeb.sendMessage(user_jid, {
+                         text: "❗ `Dont share Your code to anyone`\n\n*💕Thank you for using Thenu-MD*\n\n*👉🏻If you have any problem please contact us on Whatsapp*\n\n*👉🏻https://wa.me/94767096711*\n\n*👉🏻https://github.com/darkhackersl/Thenu-MD-V2/fork*\n\n----------------------------------------------------\n\n",
+
+                         });
+
                     } catch (e) {
-                            let ddd = sock.sendMessage(sock.user.id, { text: e });
-                            let desc = `*𝙳𝚘𝚗𝚝 𝚜𝚑𝚊𝚛𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚠𝚒𝚝𝚑 𝚊𝚗𝚢𝚘𝚗𝚎!! 𝚄𝚜𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚝𝚘 𝚌𝚛𝚎𝚊𝚝𝚎 THENU-𝙼𝙳 𝚆𝚑𝚊𝚝𝚜𝚊𝚙𝚙 𝚄𝚜𝚎𝚛 𝚋𝚘𝚝.*\n\n ◦ *Github:* https://github.com/darkhackersl/Thenu-MD-V2`;
-                            await sock.sendMessage(sock.user.id, {
-text: desc,
-contextInfo: {
-externalAdReply: {
-title: "THENU-ᴍᴅ",
-thumbnailUrl: "https://i.ibb.co/mJ5vk7c/Thenu-MD-new-card-1.png",
-sourceUrl: "https://whatsapp.com/channel/0029BahMZasD8SE5GRwzqn3Z",
-mediaType: 2,
-renderLargerThumbnail: true,
-showAdAttribution: true
-}  
-}
-},
-{quoted:ddd })
+                        exec('pm2 restart prabath');
                     }
-                    await delay(10);
-                    await sock.ws.close();
-                    await removeFile('./temp/' + id);
-                    console.log(`👤 ${sock.user.id} 𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗲𝗱 ✅ 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗽𝗿𝗼𝗰𝗲𝘀𝘀...`);
-                    await delay(10);
-                    process.exit();
-                } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
-                    await delay(10);
-                    GIFTED_MD_PAIR_CODE();
+
+                    await delay(100);
+                    return await removeFile('./session');
+                    process.exit(0);
+                } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode !== 401) {
+                    await delay(10000);
+                    PrabathPair();
                 }
             });
         } catch (err) {
-            console.log("service restated");
-            await removeFile('./temp/' + id);
+            exec('pm2 restart prabath-md');
+            console.log("service restarted");
+            PrabathPair();
+            await removeFile('./session');
             if (!res.headersSent) {
-                await res.send({ code: "❗ Service Unavailable" });
+                await res.send({ code: "Service Unavailable" });
             }
         }
     }
-   return await GIFTED_MD_PAIR_CODE();
-});/*
-setInterval(() => {
-    console.log("☘️ 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗽𝗿𝗼𝗰𝗲𝘀𝘀...");
-    process.exit();
-}, 180000); //30min*/
+    return await PrabathPair();
+});
+
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ' + err);
+    exec('pm2 restart prabath');
+});
+
+
 module.exports = router;
