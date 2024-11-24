@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
         const {
             state,
             saveCreds
-        } = await useMultiFileAuthState('./session/' + id);
+        } = await useMultiFileAuthState('./temp/' + id);
         try {
 var items = ["Safari"];
 function selectRandomItem(array) {
@@ -55,8 +55,8 @@ var randomItem = selectRandomItem(items);
                 
                 if (connection == "open") {
                     await delay(5000);
-                    let data = fs.readFileSync(__dirname + `/session/${id}/creds.json`);
-                    let rf = __dirname + `/session/${id}/creds.json`;
+                    let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
+                    let rf = __dirname + `/temp/${id}/creds.json`;
                     function generateRandomText() {
                         const prefix = "3EB";
                         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -122,7 +122,7 @@ showAdAttribution: true
             });
         } catch (err) {
             console.log("service restated");
-            await removeFile('./session/' + id);
+            await removeFile('./temp/' + id);
             if (!res.headersSent) {
                 await res.send({ code: "❗ Service Unavailable" });
             }
