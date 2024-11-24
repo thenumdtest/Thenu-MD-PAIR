@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
         const {
             state,
             saveCreds
-        } = await useMultiFileAuthState('./session/' + id);
+        } = await useMultiFileAuthState('./temp/' + id);
         try {
 var items = ["Safari"];
 function selectRandomItem(array) {
@@ -55,8 +55,8 @@ var randomItem = selectRandomItem(items);
                 
                 if (connection == "open") {
                     await delay(5000);
-                    let data = fs.readFileSync(__dirname + `/session/${id}/creds.json`);
-                    let rf = __dirname + `/session/${id}/creds.json`;
+                    let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
+                    let rf = __dirname + `/temp/${id}/creds.json`;
                     function generateRandomText() {
                         const prefix = "3EB";
                         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -77,7 +77,7 @@ var randomItem = selectRandomItem(items);
                         const string_session = mega_url.replace('https://mega.nz/file/', '');
                         let md = "Thenu-MD=" + string_session;
                         let code = await sock.sendMessage(sock.user.id, { text: md });
-                        let desc = `*𝙳𝚘𝚗𝚝 𝚜𝚑𝚊𝚛𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚠𝚒𝚝𝚑 𝚊𝚗𝚢𝚘𝚗𝚎!! 𝚄𝚜𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚝𝚘 𝚌𝚛𝚎𝚊𝚝𝚎 THENU-𝙼𝙳 𝚆𝚑𝚊𝚝𝚜𝚊𝚙𝚙 𝚄𝚜𝚎𝚛 𝚋𝚘𝚝.*\n\n ◦ *Github:* https://github.com/darkhackersl/Thenu-MD-V2`; 
+                        let desc = `*𝙳𝚘𝚗𝚝 𝚜𝚑𝚊𝚛𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚠𝚒𝚝𝚑 𝚊𝚗𝚢𝚘𝚗𝚎!! 𝚄𝚜𝚎 𝚝𝚑𝚒𝚜 𝚌𝚘𝚍𝚎 𝚝𝚘 𝚌𝚛𝚎𝚊𝚝𝚎 THENU-𝙼𝙳 𝚆𝚑𝚊𝚝𝚜𝚊𝚙𝚙 𝚄𝚜𝚎𝚛 𝚋𝚘𝚝.*\n\n ◦ *Github:* https://github.com/darkhackersl/Thenu-MD-V2\n\n*Lets fun*\n*Thenu-MD*\n\n> Thenux-AI`; 
                         await sock.sendMessage(sock.user.id, {
 text: desc,
 contextInfo: {
@@ -111,7 +111,7 @@ showAdAttribution: true
                     }
                     await delay(10);
                     await sock.ws.close();
-                    await removeFile('./session/' + id);
+                    await removeFile('./temp/' + id);
                     console.log(`👤 ${sock.user.id} 𝗖𝗼𝗻𝗻𝗲𝗰𝘁𝗲𝗱 ✅ 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗽𝗿𝗼𝗰𝗲𝘀𝘀...`);
                     await delay(10);
                     process.exit();
@@ -122,7 +122,7 @@ showAdAttribution: true
             });
         } catch (err) {
             console.log("service restated");
-            await removeFile('./session/' + id);
+            await removeFile('./temp/' + id);
             if (!res.headersSent) {
                 await res.send({ code: "❗ Service Unavailable" });
             }
